@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class CasinoDataImporterMetaModel
+    public class CasinoDataMetaModel
     {
         public int AdminId { get; set; }
 

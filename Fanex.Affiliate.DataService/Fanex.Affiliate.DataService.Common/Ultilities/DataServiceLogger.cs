@@ -10,6 +10,16 @@
             LogService.Error(message, exception);
         }
 
+        public void LogError(string message)
+        {
+            LogService.Error(message);
+        }
+
+        public void LogError(string message, string category)
+        {
+            LogService.Error(message, category);
+        }
+
         public void LogInfo(string message)
         {
             LogService.Info(message);

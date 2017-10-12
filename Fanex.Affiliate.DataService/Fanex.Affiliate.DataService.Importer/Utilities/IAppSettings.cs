@@ -1,6 +1,6 @@
-﻿namespace Fanex.Affiliate.DataService.Importer.Interface
+﻿namespace Fanex.Affiliate.DataService.Importer.Utilities
 {
-    public interface IImporterAppSettings
+    public interface IAppSettings : Common.Ultilities.IAppSettings
     {
         int CheckingTime1 { get; }
 
@@ -25,7 +25,5 @@
         string BccMail { get; }
 
         string SubjectMailError { get; }
-
-        string GetValue(string key);
     }
 }

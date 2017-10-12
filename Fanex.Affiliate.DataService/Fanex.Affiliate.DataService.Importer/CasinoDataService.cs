@@ -1,42 +1,42 @@
-﻿using System;
-using System.Collections;
-using System.IO;
-using System.Net;
-using System.Xml;
-using Fanex.Affiliate.DataService.Importer.DTO;
-using Fanex.Affiliate.DataService.Importer.Enum;
-using Fanex.Affiliate.DataService.Importer.Interface;
-using Fanex.Affiliate.DataService.Importer.Repository;
-using Fanex.Affiliate.DataService.Importer.Utilities;
-
-namespace Fanex.Affiliate.DataService.Importer
+﻿namespace Fanex.Affiliate.DataService.Importer
 {
-    public class DataImporterService : IDataImporterService
+    using System;
+    using System.Collections;
+    using System.IO;
+    using System.Net;
+    using System.Xml;
+    using Common.Enum;
+    using Fanex.Affiliate.DataService.Importer.DTO;
+    using Fanex.Affiliate.DataService.Importer.Enum;
+    using Fanex.Affiliate.DataService.Importer.Repository;
+    using Fanex.Affiliate.DataService.Importer.Utilities;
+
+    public class CasinoDataService : ICasinoDataService
     {
-        private readonly ICasinoDataImporterRepository _casinoDataImporterRepository;
-        private readonly IImporterAppSettings _appSettings;
+        private readonly ICasinoDataRepository _casinoDataImporterRepository;
+        private readonly IAppSettings _appSettings;
         private readonly ColumnName _columnName;
 
-        public DataImporterService() : this(null, null)
+        public CasinoDataService() : this(null, null)
         {
             _columnName = new ColumnName();
         }
 
-        public DataImporterService(ICasinoDataImporterRepository casinoDataImporterRepository, IImporterAppSettings appSetting)
+        public CasinoDataService(ICasinoDataRepository casinoDataImporterRepository, IAppSettings appSetting)
         {
-            _casinoDataImporterRepository = casinoDataImporterRepository ?? new CasinoDataImporterRepository();
-            _appSettings = appSetting ?? new ImporterAppSettings();
+            _casinoDataImporterRepository = casinoDataImporterRepository ?? new CasinoDataRepository();
+            _appSettings = appSetting ?? new AppSettings();
             _columnName = new ColumnName(_appSettings);
         }
 
-        public ResultInfo ImportData(DateImportType dateImport)
+        public ResultInfo ImportData(DateType dateType)
         {
-            var fileName = DownloadFile(dateImport);
+            var fileName = DownloadFile(dateType);
             var xmlDocument = ConvertCSVToXml(fileName);
 
-            var metaModel = new CasinoDataImporterMetaModel
+            var metaModel = new CasinoDataMetaModel
             {
-                DateImport = (dateImport == DateImportType.Yesterday ? DateTime.Now.AddDays(-1) : DateTime.Now),
+                DateImport = (dateType == DateType.Yesterday ? DateTime.Now.AddDays(-1) : DateTime.Now),
                 XmlData = xmlDocument.OuterXml,
                 AdminId = _appSettings.AdminId
             };
@@ -48,9 +48,9 @@ namespace Fanex.Affiliate.DataService.Importer
             return result;
         }
 
-        public string DownloadFile(DateImportType dateImport)
+        public string DownloadFile(DateType dateType)
         {
-            var date = dateImport == DateImportType.Yesterday ? DateTime.Now.AddDays(-1) : DateTime.Now;
+            var date = dateType == DateType.Yesterday ? DateTime.Now.AddDays(-1) : DateTime.Now;
 
             var path = $"{_appSettings.PathSaveFile}{date.ToString("yyyy/MM/")}";
             if (!Directory.Exists(path))

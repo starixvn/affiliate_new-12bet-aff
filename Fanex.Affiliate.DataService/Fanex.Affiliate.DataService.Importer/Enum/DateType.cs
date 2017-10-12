@@ -1,6 +1,6 @@
 ﻿namespace Fanex.Affiliate.DataService.Importer.Enum
 {
-    public enum DateImportType
+    public enum DateType
     {
         Yesterday = 0,
         Today = 1

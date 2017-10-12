@@ -77,21 +77,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataImporterService.cs" />
-    <Compile Include="DTO\CasinoDataImporterMetaModel.cs" />
+    <Compile Include="CasinoDataImportingRunner.cs" />
+    <Compile Include="CasinoDataService.cs" />
+    <Compile Include="DTO\CasinoDataMetaModel.cs" />
     <Compile Include="DTO\ColumnName.cs" />
     <Compile Include="DTO\ResultInfo.cs" />
-    <Compile Include="Enum\DateImportType.cs" />
-    <Compile Include="Enum\SystemType.cs" />
-    <Compile Include="Interface\IImporterAppSettings.cs" />
-    <Compile Include="Interface\ICasinoDataImporterRepository.cs" />
-    <Compile Include="Interface\IDataImporterService.cs" />
+    <Compile Include="Enum\DateType.cs" />
+    <Compile Include="ICasinoDataImportingRunner.cs" />
+    <Compile Include="Repository\BaseRepository.cs" />
+    <Compile Include="Utilities\IAppSettings.cs" />
+    <Compile Include="Repository\ICasinoDataRepository.cs" />
+    <Compile Include="ICasinoDataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository\CasinoDataImporterRepository.cs" />
-    <Compile Include="Utilities\ImporterAppSettings.cs" />
-    <Compile Include="Utilities\RepositoryHelper.cs" />
+    <Compile Include="Repository\CasinoDataRepository.cs" />
+    <Compile Include="Utilities\AppSettings.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Fanex.Affiliate.DataService.Common\Fanex.Affiliate.DataService.Common.csproj">
+      <Project>{630695C3-9F88-42AD-AAAA-5AD08890935F}</Project>
+      <Name>Fanex.Affiliate.DataService.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />

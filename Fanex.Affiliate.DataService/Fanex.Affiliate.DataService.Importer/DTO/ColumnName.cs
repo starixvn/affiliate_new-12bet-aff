@@ -1,19 +1,18 @@
-﻿using Fanex.Affiliate.DataService.Importer.Interface;
-using Fanex.Affiliate.DataService.Importer.Utilities;
-
-namespace Fanex.Affiliate.DataService.Importer.DTO
+﻿namespace Fanex.Affiliate.DataService.Importer.DTO
 {
+    using Fanex.Affiliate.DataService.Importer.Utilities;
+
     public class ColumnName
     {
-        private readonly IImporterAppSettings _appSettings;
+        private readonly IAppSettings _appSettings;
 
         public ColumnName() : this(null)
         {
         }
 
-        public ColumnName(IImporterAppSettings appSetting)
+        public ColumnName(IAppSettings appSetting)
         {
-            _appSettings = appSetting ?? new ImporterAppSettings();
+            _appSettings = appSetting ?? new AppSettings();
         }
 
         public string Date => _appSettings.GetValue("Date");

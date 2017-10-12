@@ -2,9 +2,8 @@
 {
     using System;
     using System.Configuration;
-    using Fanex.Affiliate.DataService.Importer.Interface;
 
-    public class ImporterAppSettings : IImporterAppSettings
+    public class AppSettings : IAppSettings
     {
         public int CheckingTime1 => Convert.ToInt32("checkingTime1");
 

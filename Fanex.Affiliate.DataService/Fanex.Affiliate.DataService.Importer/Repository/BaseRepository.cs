@@ -1,19 +1,21 @@
-﻿namespace Fanex.Affiliate.DataService.Importer.Utilities
+﻿namespace Fanex.Affiliate.DataService.Importer.Repository
 {
     using System;
     using System.Data;
-    using Data;
     using Fanex.Affiliate.DataService.Importer.DTO;
+    using Fanex.Data;
 
-    public static class RepositoryHelper
+    public class BaseRepository
     {
-        public static void AddResultParam(IObjectDb objectDb)
+        protected BaseRepository() { }
+
+        protected static void AddResultParam(IObjectDb objectDb)
         {
             objectDb.AddOutParameter("ErrCode", DbType.Int32, 4);
             objectDb.AddOutParameter("ErrMsg", DbType.String, 4000);
         }
 
-        public static ResultInfo GetResultInfo(IObjectDb objectDb)
+        protected static ResultInfo GetResultInfo(IObjectDb objectDb)
         {
             var errorCode = objectDb.GetParameterValue("ErrCode");
             var errorMessage = objectDb.GetParameterValue("ErrMsg");

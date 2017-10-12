@@ -1,15 +1,13 @@
 ﻿namespace Fanex.Affiliate.DataService.Importer.Repository
 {
     using System.Data;
+    using Common.Enum;
     using Fanex.Affiliate.DataService.Importer.DTO;
-    using Fanex.Affiliate.DataService.Importer.Enum;
-    using Fanex.Affiliate.DataService.Importer.Interface;
-    using Fanex.Affiliate.DataService.Importer.Utilities;
     using Fanex.Data;
 
-    public class CasinoDataImporterRepository : ICasinoDataImporterRepository
+    public class CasinoDataRepository : BaseRepository, ICasinoDataRepository
     {
-        public ResultInfo ImportCasinoData(SystemType systemType, CasinoDataImporterMetaModel metaModel)
+        public ResultInfo ImportCasinoData(SystemType systemType, CasinoDataMetaModel metaModel)
         {
             switch (systemType)
             {
@@ -34,7 +32,7 @@
             }
         }
 
-        private ResultInfo ImportDataFor12Bet(CasinoDataImporterMetaModel metaModel)
+        private ResultInfo ImportDataFor12Bet(CasinoDataMetaModel metaModel)
         {
             const string spName = "Aff_CasinoImportData";
 
@@ -44,15 +42,15 @@
                 objectDb.AddInParameter("importdate", DbType.DateTime, metaModel.DateImport);
                 objectDb.AddInParameter("isreplacedata", DbType.Boolean, true);
 
-                RepositoryHelper.AddResultParam(objectDb);
+                AddResultParam(objectDb);
 
                 objectDb.ExecuteNonQuery();
 
-                return RepositoryHelper.GetResultInfo(objectDb);
+                return GetResultInfo(objectDb);
             }
         }
 
-        private ResultInfo ImportDataForIncomeAccess(CasinoDataImporterMetaModel metaModel)
+        private ResultInfo ImportDataForIncomeAccess(CasinoDataMetaModel metaModel)
         {
             const string spName = "Task_Aff_MemberDailyCasino_IA";
 
@@ -61,15 +59,15 @@
                 AssignCommonParam(objectDb, metaModel);
                 objectDb.AddInParameter("winlostdate", DbType.Date, metaModel.DateImport);
 
-                RepositoryHelper.AddResultParam(objectDb);
+                AddResultParam(objectDb);
 
                 objectDb.ExecuteNonQuery();
 
-                return RepositoryHelper.GetResultInfo(objectDb);
+                return GetResultInfo(objectDb);
             }
         }
 
-        private void AssignCommonParam(IObjectDb objectDb, CasinoDataImporterMetaModel metaModel)
+        private void AssignCommonParam(IObjectDb objectDb, CasinoDataMetaModel metaModel)
         {
             objectDb.AddInParameter("adminid", DbType.Int32, metaModel.AdminId);
             objectDb.AddInParameter("xmldata", DbType.String, metaModel.XmlData);
