@@ -4,7 +4,7 @@
     using System.Configuration;
     using Fanex.Affiliate.DataService.CheckSum.Interface;
 
-    public class CheckSumAppSettings : ICheckSumAppSettings
+    public class AppSettings : IAppSettings
     {
         public int CheckingTime => Convert.ToInt32(GetValue("checkingTime"));
 

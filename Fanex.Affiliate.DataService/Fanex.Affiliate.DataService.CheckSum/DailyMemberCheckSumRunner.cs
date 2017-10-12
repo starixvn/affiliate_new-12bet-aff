@@ -2,25 +2,36 @@
 {
     using System;
     using System.Data;
-    using Enum;
+    using System.Data.SqlClient;
+    using System.Text;
+    using Common.DTO;
+    using Common.Enum;
+    using Common.Ultilities;
     using Fanex.Affiliate.DataService.CheckSum.Interface;
-    using Logging;
     using Repository;
     using Utilities;
 
     public class DailyMemberCheckSumRunner : IDailyMemberCheckSumRunner
     {
-        private readonly ICheckSumAppSettings _appSettings;
+        private readonly Utilities.IAppSettings _appSettings;
         private readonly IDailyMemberRepository _dailyMemberRepository;
+        private readonly IDataServiceFactory _dataServiceFactory;
 
-        public DailyMemberCheckSumRunner() : this(null, null)
+        protected IDataServiceLogger Logger => _dataServiceFactory.GetLogger();
+
+        protected IEmailSender EmailSender => _dataServiceFactory.GetEmailSender();
+
+        public DailyMemberCheckSumRunner() : this(null, null, null)
         {
         }
 
-        public DailyMemberCheckSumRunner(IDailyMemberRepository dailyMemberRepository, ICheckSumAppSettings appSettings)
+        public DailyMemberCheckSumRunner(IDailyMemberRepository dailyMemberRepository,
+            Utilities.IAppSettings appSettings,
+            IDataServiceFactory dataServiceFactory)
         {
-            _appSettings = appSettings ?? new CheckSumAppSettings();
+            _appSettings = appSettings ?? new AppSettings();
             _dailyMemberRepository = dailyMemberRepository ?? new DailyMemberRepository();
+            _dataServiceFactory = dataServiceFactory ?? new DataServiceFactory();
         }
 
         public void Run()
@@ -38,8 +49,8 @@
             }
             catch (Exception ex)
             {
-                LogHelper.WriteErrorLog("AFFCheckSum", ex);
-                //SendEmail(_appSettings.SubjectMailError, ex.Message);
+                WriteErrorLog("AFFCheckSum", ex);
+                SendMail(ex.Message);
             }
         }
 
@@ -65,10 +76,47 @@
             //if failed: send email to IT team
             if (!isMatch)
             {
-                //SendEmail(_appSettings.SubjectMailError, buildBodyEmail(rs.ResultSet.Tables[0]));
+                var emailContent = EmailContentBuilder.Build(systemType, dataTable, _appSettings.ForDate);
+                SendMail(emailContent);
             }
 
-            LogService.Info($"{logTitle} {DateTime.Now.AddDays(_appSettings.ForDate).ToShortDateString()}; IsMatch: {isMatch}");
+            Logger.LogInfo($"{logTitle} {DateTime.Now.AddDays(_appSettings.ForDate).ToShortDateString()}; IsMatch: {isMatch}");
+        }
+
+        private void WriteErrorLog(string message, Exception exception)
+        {
+            var content = new StringBuilder().AppendLine(message).AppendLine(exception.Message);
+
+            content.AppendLine("SOURCE: " + exception.Source)
+                   .AppendLine("TARGETSITE: " + exception.TargetSite)
+                   .AppendLine("STACKTRACE: " + exception.StackTrace);
+
+            var sqlException = exception as SqlException;
+            if (sqlException != null)
+            {
+                content.AppendLine("Procedure: " + sqlException.Procedure)
+                    .AppendLine("Line Number: " + sqlException.LineNumber)
+                    .AppendLine("Server: " + sqlException.Server);
+            }
+
+            Logger.LogError(content.ToString(), exception);
+        }
+
+        private void SendMail(string content)
+        {
+            var title = _appSettings.SubjectMailError;
+
+            var email = new Email
+            {
+                To = _appSettings.ToMail,
+                Subject = title,
+                Title = title,
+                Body = content,
+                Bcc = _appSettings.BccMail,
+                Cc = _appSettings.CcMail
+            };
+
+            EmailSender.Send(email);
         }
     }
 }

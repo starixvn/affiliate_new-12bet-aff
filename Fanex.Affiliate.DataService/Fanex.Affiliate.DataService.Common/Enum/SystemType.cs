@@ -1,7 +1,8 @@
-﻿namespace Fanex.Affiliate.DataService.CheckSum.Enum
+﻿namespace Fanex.Affiliate.DataService.Common.Enum
 {
     public enum SystemType
     {
+        All = 0,
         Affiliate12Bet = 1,
         IncomeAccess = 2
     }
