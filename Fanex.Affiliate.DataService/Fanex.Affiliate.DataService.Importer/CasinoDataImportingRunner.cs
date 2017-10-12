@@ -8,24 +8,26 @@
 
     public class CasinoDataImportingRunner : ICasinoDataImportingRunner
     {
+        private const string LogTitle = "AFF Import Casino Data:";
+
         private readonly ICasinoDataService _casinoDataService;
-        private readonly Utilities.IAppSettings _appSettings;
+        private readonly IAppSettings _appSettings;
         private readonly IDataServiceFactory _dataServiceFactory;
-
-        protected IDataServiceLogger Logger => _dataServiceFactory.GetLogger();
-
-        protected IEmailSender EmailSender => _dataServiceFactory.GetEmailSender();
 
         public CasinoDataImportingRunner() : this(null, null, null)
         {
         }
 
-        public CasinoDataImportingRunner(ICasinoDataService casinoDataService, Utilities.IAppSettings appSetting, IDataServiceFactory dataServiceFactory)
+        public CasinoDataImportingRunner(ICasinoDataService casinoDataService, IAppSettings appSetting, IDataServiceFactory dataServiceFactory)
         {
             _casinoDataService = casinoDataService ?? new CasinoDataService();
             _appSettings = appSetting ?? new AppSettings();
             _dataServiceFactory = dataServiceFactory ?? new DataServiceFactory();
         }
+
+        protected IDataServiceLogger Logger => _dataServiceFactory.GetLogger();
+
+        protected IEmailSender EmailSender => _dataServiceFactory.GetEmailSender();
 
         public void Run()
         {
@@ -35,7 +37,7 @@
                 var dateType = DateType.Today;
                 var logMessage = "Today - Last Time Run: " + now.ToLongDateString();
 
-                //Run Yesterday Data at the beginning and the end of today
+                // Run Yesterday Data at the beginning and the end of today
                 if (now.Hour == _appSettings.CheckingTime1 || now.Hour == _appSettings.CheckingTime2 || _appSettings.ForTest)
                 {
                     dateType = DateType.Yesterday;
@@ -44,17 +46,17 @@
 
                 var result = _casinoDataService.ImportData(dateType);
 
-                Logger.LogInfo("AFF Import Casino Data: " + logMessage);
+                Logger.LogInfo($"{LogTitle} {logMessage}");
 
                 if (!result.IsSuccessful)
                 {
-                    Logger.LogError("AFF Import Casino Data: " + result.Code + ": " + result.Message);
+                    Logger.LogError($"{LogTitle} {result.Code}: {result.Message}");
                     SendMail(result.Message);
                 }
             }
             catch (Exception ex)
             {
-                Logger.LogError("AFF Import Casino Data: " + ex.Message, ex + "\r\nStacktrace: " + ex.StackTrace);
+                Logger.LogError($"{LogTitle} {ex.Message}", ex + "\r\nStacktrace: " + ex.StackTrace);
                 SendMail(ex.Message);
             }
         }

@@ -34,9 +34,9 @@
 
         private ResultInfo ImportDataFor12Bet(CasinoDataMetaModel metaModel)
         {
-            const string spName = "Aff_CasinoImportData";
+            const string SpName = "Aff_CasinoImportData";
 
-            using (var objectDb = new ObjectDb(spName))
+            using (var objectDb = new ObjectDb(SpName))
             {
                 AssignCommonParam(objectDb, metaModel);
                 objectDb.AddInParameter("importdate", DbType.DateTime, metaModel.DateImport);
@@ -52,9 +52,9 @@
 
         private ResultInfo ImportDataForIncomeAccess(CasinoDataMetaModel metaModel)
         {
-            const string spName = "Task_Aff_MemberDailyCasino_IA";
+            const string SpName = "Task_Aff_MemberDailyCasino_IA";
 
-            using (var objectDb = new ObjectDb(spName))
+            using (var objectDb = new ObjectDb(SpName))
             {
                 AssignCommonParam(objectDb, metaModel);
                 objectDb.AddInParameter("winlostdate", DbType.Date, metaModel.DateImport);

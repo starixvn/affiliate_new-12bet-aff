@@ -70,7 +70,6 @@
   <ItemGroup>
     <Compile Include="DTO\Email.cs" />
     <Compile Include="Enum\SystemType.cs" />
-    <Compile Include="Ultilities\IAppSettings.cs" />
     <Compile Include="Ultilities\IDataServiceFactory.cs" />
     <Compile Include="Ultilities\IEmailSender.cs" />
     <Compile Include="Ultilities\IDataServiceLogger.cs" />

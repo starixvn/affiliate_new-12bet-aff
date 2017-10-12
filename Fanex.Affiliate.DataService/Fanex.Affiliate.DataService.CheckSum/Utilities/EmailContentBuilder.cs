@@ -45,14 +45,29 @@
             var stringBuilder = new StringBuilder();
 
             var headerTemplate = BuildRowTemplate(Aff12BetColumnCount, true);
-            stringBuilder.Append(string.Format(headerTemplate,
-                DepositColumnName, WithdrawalColumnName, BonusColumnName, AdjustmentColumnName, TurnoverColumnName, WinlostColumnName, DescriptionColumnName));
+            stringBuilder.Append(string.Format(
+                headerTemplate,
+                DepositColumnName,
+                WithdrawalColumnName,
+                BonusColumnName,
+                AdjustmentColumnName,
+                TurnoverColumnName,
+                WinlostColumnName,
+                DescriptionColumnName));
 
             var dataRowTemplate = BuildRowTemplate(Aff12BetColumnCount);
             foreach (DataRow dr in dataTable.Rows)
             {
-                stringBuilder.Append(string.Format(dataRowTemplate, DecFormat(dr[DepositColumnName]), DecFormat(dr[WithdrawalColumnName]), DecFormat(dr[BonusColumnName]),
-                                            DecFormat(dr[AdjustmentColumnName]), DecFormat(dr[TurnoverColumnName]), DecFormat(dr[WinlostColumnName]), dr[DescriptionColumnName]));
+                stringBuilder.Append(
+                    string.Format(
+                        dataRowTemplate,
+                        DecFormat(dr[DepositColumnName]),
+                        DecFormat(dr[WithdrawalColumnName]),
+                        DecFormat(dr[BonusColumnName]),
+                        DecFormat(dr[AdjustmentColumnName]),
+                        DecFormat(dr[TurnoverColumnName]),
+                        DecFormat(dr[WinlostColumnName]),
+                        dr[DescriptionColumnName]));
             }
 
             var tableContent = stringBuilder.ToString();
@@ -66,17 +81,42 @@
             var stringBuilder = new StringBuilder();
 
             var headerTemplate = BuildRowTemplate(IncomeAccessColumnCount, true);
-            stringBuilder.Append(string.Format(headerTemplate,
-                DepositColumnName, WithdrawalColumnName, BonusColumnName, AdjustmentColumnName, TurnoverColumnName, OutstandingColumnName, WinlostColumnName,
-                DrawGameColumnName, TurnoverHRColumnName, OutstandingHRColumnName, WinlostHRColumnName, DrawGameHRColumnName, DescriptionColumnName));
+            stringBuilder.Append(
+                string.Format(
+                    headerTemplate,
+                    DepositColumnName,
+                    WithdrawalColumnName,
+                    BonusColumnName,
+                    AdjustmentColumnName,
+                    TurnoverColumnName,
+                    OutstandingColumnName,
+                    WinlostColumnName,
+                    DrawGameColumnName,
+                    TurnoverHRColumnName,
+                    OutstandingHRColumnName,
+                    WinlostHRColumnName,
+                    DrawGameHRColumnName,
+                    DescriptionColumnName));
 
             var dataRowTemplate = BuildRowTemplate(IncomeAccessColumnCount);
             foreach (DataRow dr in dataTable.Rows)
             {
-                stringBuilder.Append(string.Format(dataRowTemplate, DecFormat(dr[DepositColumnName]), DecFormat(dr[WithdrawalColumnName]), DecFormat(dr[BonusColumnName]),
-                                    DecFormat(dr[AdjustmentColumnName]), DecFormat(dr[TurnoverColumnName]), DecFormat(dr[OutstandingColumnName]), DecFormat(dr[WinlostColumnName]),
-                                    DecFormat(dr[DrawGameColumnName]), DecFormat(dr[TurnoverHRColumnName]), DecFormat(dr[OutstandingHRColumnName]), DecFormat(dr[WinlostHRColumnName]),
-                                    DecFormat(dr[DrawGameHRColumnName]), dr[DescriptionColumnName]));
+                stringBuilder.Append(
+                    string.Format(
+                        dataRowTemplate,
+                        DecFormat(dr[DepositColumnName]),
+                        DecFormat(dr[WithdrawalColumnName]),
+                        DecFormat(dr[BonusColumnName]),
+                        DecFormat(dr[AdjustmentColumnName]),
+                        DecFormat(dr[TurnoverColumnName]),
+                        DecFormat(dr[OutstandingColumnName]),
+                        DecFormat(dr[WinlostColumnName]),
+                        DecFormat(dr[DrawGameColumnName]),
+                        DecFormat(dr[TurnoverHRColumnName]),
+                        DecFormat(dr[OutstandingHRColumnName]),
+                        DecFormat(dr[WinlostHRColumnName]),
+                        DecFormat(dr[DrawGameHRColumnName]),
+                        dr[DescriptionColumnName]));
             }
 
             var tableContent = stringBuilder.ToString();
@@ -102,9 +142,9 @@
 
         private static string BuildRowTemplate(int columnCount, bool isHeader = false)
         {
-            var trTag = isHeader ? "<tr bgcolor=\"#e1ebf2\">" : "<tr>";
+            var tableRow = isHeader ? "<tr bgcolor=\"#e1ebf2\">" : "<tr>";
             var builder = new StringBuilder();
-            builder.Append(trTag);
+            builder.Append(tableRow);
 
             for (int i = 0; i < columnCount; i++)
             {

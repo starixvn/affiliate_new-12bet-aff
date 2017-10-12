@@ -7,7 +7,9 @@
 
     public class BaseRepository
     {
-        protected BaseRepository() { }
+        protected BaseRepository()
+        {
+        }
 
         protected static void AddResultParam(IObjectDb objectDb)
         {

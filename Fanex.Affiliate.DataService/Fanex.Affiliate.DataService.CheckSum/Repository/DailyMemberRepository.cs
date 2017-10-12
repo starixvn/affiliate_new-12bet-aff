@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using Fanex.Affiliate.DataService.CheckSum.Interface;
 using Fanex.Data;
 
 namespace Fanex.Affiliate.DataService.CheckSum.Repository
@@ -9,21 +8,21 @@ namespace Fanex.Affiliate.DataService.CheckSum.Repository
     {
         public DataTable CheckSumDailyMemberFor12Bet(DateTime date, out bool isMatch)
         {
-            const string spName = "Aff_CheckSum";
+            const string SpName = "Aff_CheckSum";
 
-            return GetCheckSumDailyMemberData(spName, date, out isMatch);
+            return GetCheckSumDailyMemberData(SpName, date, out isMatch);
         }
 
         public DataTable CheckSumDailyMemberForIncomeAccess(DateTime date, out bool isMatch)
         {
-            const string spName = "IA_CheckSum";
+            const string SpName = "IA_CheckSum";
 
-            return GetCheckSumDailyMemberData(spName, date, out isMatch);
+            return GetCheckSumDailyMemberData(SpName, date, out isMatch);
         }
 
-        private DataTable GetCheckSumDailyMemberData(string spName, DateTime date, out bool isMatch)
+        private DataTable GetCheckSumDailyMemberData(string uspName, DateTime date, out bool isMatch)
         {
-            using (var objectDb = new ObjectDb(spName))
+            using (var objectDb = new ObjectDb(uspName))
             {
                 objectDb.AddInParameter("date", DbType.Date, date.Date);
                 objectDb.AddOutParameter("ismatch", DbType.Boolean, 4);

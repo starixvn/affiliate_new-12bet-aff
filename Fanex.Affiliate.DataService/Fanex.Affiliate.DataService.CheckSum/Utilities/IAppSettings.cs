@@ -1,6 +1,6 @@
 ﻿namespace Fanex.Affiliate.DataService.CheckSum.Utilities
 {
-    public interface IAppSettings : Common.Ultilities.IAppSettings
+    public interface IAppSettings
     {
         int CheckingTime { get; }
 
@@ -15,5 +15,7 @@
         string BccMail { get; }
 
         string SubjectMailError { get; }
+
+        string GetValue(string key);
     }
 }

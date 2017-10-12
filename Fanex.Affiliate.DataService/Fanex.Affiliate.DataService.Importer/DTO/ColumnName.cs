@@ -27,7 +27,6 @@
 
         public string Bonus => _appSettings.GetValue("Bonus");
 
-        //IA column name
         public string IADate => _appSettings.GetValue("IADate");
 
         public string IAWinlost => _appSettings.GetValue("IAWinlost");

@@ -13,20 +13,17 @@
 
     public class DailyMemberCheckSumRunner : IDailyMemberCheckSumRunner
     {
-        private readonly Utilities.IAppSettings _appSettings;
+        private readonly IAppSettings _appSettings;
         private readonly IDailyMemberRepository _dailyMemberRepository;
         private readonly IDataServiceFactory _dataServiceFactory;
-
-        protected IDataServiceLogger Logger => _dataServiceFactory.GetLogger();
-
-        protected IEmailSender EmailSender => _dataServiceFactory.GetEmailSender();
 
         public DailyMemberCheckSumRunner() : this(null, null, null)
         {
         }
 
-        public DailyMemberCheckSumRunner(IDailyMemberRepository dailyMemberRepository,
-            Utilities.IAppSettings appSettings,
+        public DailyMemberCheckSumRunner(
+            IDailyMemberRepository dailyMemberRepository,
+            IAppSettings appSettings,
             IDataServiceFactory dataServiceFactory)
         {
             _appSettings = appSettings ?? new AppSettings();
@@ -34,11 +31,15 @@
             _dataServiceFactory = dataServiceFactory ?? new DataServiceFactory();
         }
 
+        protected IDataServiceLogger Logger => _dataServiceFactory.GetLogger();
+
+        protected IEmailSender EmailSender => _dataServiceFactory.GetEmailSender();
+
         public void Run()
         {
             try
             {
-                //decide time to compare data(check data 2 times: first at 11:00-12:00, second at 23:00-24:00)
+                // decide time to compare data(check data 2 times: first at 11:00-12:00, second at 23:00-24:00)
                 if (DateTime.Now.Hour == _appSettings.CheckingTime || _appSettings.ForTest)
                 {
                     DateTime date = DateTime.Now.AddDays(_appSettings.ForDate);
@@ -73,7 +74,6 @@
                     break;
             }
 
-            //if failed: send email to IT team
             if (!isMatch)
             {
                 var emailContent = EmailContentBuilder.Build(systemType, dataTable, _appSettings.ForDate);
