@@ -2,7 +2,7 @@
 {
     using System;
 
-    public interface IRazorWrapper
+    public interface IHtmlRender
     {
         string Generate(string templateContent, string name, object viewModel);
     }

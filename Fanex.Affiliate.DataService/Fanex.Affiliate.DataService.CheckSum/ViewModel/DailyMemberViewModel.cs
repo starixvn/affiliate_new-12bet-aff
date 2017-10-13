@@ -7,9 +7,8 @@ using Fanex.Affiliate.DataService.CheckSum.DTO;
 
 namespace Fanex.Affiliate.DataService.CheckSum.ViewModel
 {
-    public class DailyMemberViewModel
+    public class DailyMemberViewModel : BaseViewModel
     {
-        public string DateString { get; set; }
-        public IList<DailyMember> Data { get; set; }
+        public IEnumerable<DailyMember> Data { get; set; }
     }
 }

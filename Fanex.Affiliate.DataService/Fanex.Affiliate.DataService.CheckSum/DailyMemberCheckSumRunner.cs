@@ -9,29 +9,27 @@
     using Repository;
     using Utilities;
 
-    public class DailyMemberCheckSumRunner : IDailyMemberCheckSumRunner
+    public class DailyMemberCheckSumRunner : IDailyMemberCheckSumRunner, IDisposable
     {
         private readonly IDailyMemberRepository _dailyMemberRepository;
-        private readonly IEmailContentBuilder _emailContentBuilder;
+        private readonly IEmailBuilder _emailBuilder;
         private readonly IAppSettings _appSettings;
-        private readonly ILogger _logger;
         private readonly IMailDeliver _mailDeliver;
+        private const string NotFoundError = "Not found discrepancy data";
 
-        public DailyMemberCheckSumRunner() : this(null, null, null, null, null)
+        public DailyMemberCheckSumRunner() : this(null, null, null, null)
         {
         }
 
         public DailyMemberCheckSumRunner(
             IDailyMemberRepository dailyMemberRepository,
-            IEmailContentBuilder emailContentBuilder,
+            IEmailBuilder emailBuilder,
             IAppSettings appSettings,
-            ILogger logger,
             IMailDeliver mailDeliver)
         {
             _appSettings = appSettings ?? new AppSettings();
             _dailyMemberRepository = dailyMemberRepository ?? new DailyMemberRepository();
-            _emailContentBuilder = emailContentBuilder ?? new EmailContentBuilder();
-            _logger = logger ?? Logger.Log;
+            _emailBuilder = emailBuilder ?? new EmailBuilder();
             _mailDeliver = mailDeliver ?? new MailDeliver();
         }
 
@@ -40,39 +38,24 @@
             // decide time to compare data(check data 2 times: first at 11:00-12:00, second at 23:00-24:00)
             if (DateTime.Now.Hour == _appSettings.CheckingTime || _appSettings.ForTest)
             {
-                DateTime date = DateTime.Now.AddDays(_appSettings.ForDate);
-
-                RunCheckSumBySystem(SystemType.Affiliate12Bet, date);
-                RunCheckSumBySystem(SystemType.IncomeAccess, date);
+                var date = DateTime.Now.AddDays(_appSettings.ForDate);
+                CheckDailyMember(date);
+                CheckDailyMemberIncomeAccess(date);
             }
         }
 
-        private void RunCheckSumBySystem(SystemType systemType, DateTime date)
+        private void CheckDailyMember(DateTime date)
         {
-            bool isMatch = false;
-            object dailyMemberData = null;
-            var logTitle = string.Empty;
+            var result = _dailyMemberRepository.CheckSumDailyMemberFor12Bet(date);
+            var emailContent = result.isMatch ? NotFoundError : _emailBuilder.GenerateDailyMemberContent(result);
+            SendMail(emailContent);
+        }
 
-            switch (systemType)
-            {
-                case SystemType.Affiliate12Bet:
-                    dailyMemberData = _dailyMemberRepository.CheckSumDailyMemberFor12Bet(date, out isMatch);
-                    logTitle = "AffCheckSum run for date:";
-                    break;
-
-                case SystemType.IncomeAccess:
-                    dailyMemberData = _dailyMemberRepository.CheckSumDailyMemberForIncomeAccess(date, out isMatch);
-                    logTitle = "Income Access check sum run for date:";
-                    break;
-            }
-
-            if (!isMatch)
-            {
-                var emailContent = _emailContentBuilder.Build(systemType, dailyMemberData, _appSettings.ForDate);
-                SendMail(emailContent);
-            }
-
-            _logger.Info($"{logTitle} {DateTime.Now.AddDays(_appSettings.ForDate).ToShortDateString()}; IsMatch: {isMatch}");
+        private void CheckDailyMemberIncomeAccess(DateTime date)
+        {
+            var result = _dailyMemberRepository.CheckSumDailyMemberForIncomeAccess(date);
+            var emailContent = result.isMatch ? NotFoundError : _emailBuilder.GenerateDailyMemberIncomeAccessContent(result);
+            SendMail(emailContent);
         }
 
         private void SendMail(string content)
@@ -90,6 +73,16 @@
             };
 
             _mailDeliver.SendMail(email);
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+
+            if (_mailDeliver != null)
+            {
+                ((MailDeliver)_mailDeliver).Dispose();
+            }
         }
     }
 }

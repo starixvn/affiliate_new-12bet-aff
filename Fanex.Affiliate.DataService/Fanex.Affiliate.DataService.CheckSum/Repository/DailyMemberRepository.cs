@@ -2,13 +2,20 @@
 using System.Collections.Generic;
 using System.Data;
 using Fanex.Affiliate.DataService.CheckSum.DTO;
+using Fanex.Affiliate.DataService.CheckSum.ViewModel;
 using Fanex.Data;
 
 namespace Fanex.Affiliate.DataService.CheckSum.Repository
 {
     public class DailyMemberRepository : BaseRepository, IDailyMemberRepository
     {
-        public IEnumerable<DailyMember> CheckSumDailyMemberFor12Bet(DateTime date, out bool isMatch)
+        private static void AssignParam(IObjectDb objectDb, DateTime date)
+        {
+            objectDb.AddInParameter("date", DbType.Date, date.Date);
+            objectDb.AddOutParameter("ismatch", DbType.Boolean, 4);
+        }
+
+        public DailyMemberViewModel CheckSumDailyMemberFor12Bet(DateTime date)
         {
             const string SpName = "Aff_CheckSum";
             IEnumerable<DailyMember> dailyMemberList;
@@ -17,36 +24,31 @@ namespace Fanex.Affiliate.DataService.CheckSum.Repository
             {
                 AssignParam(objectDb, date);
 
-                dailyMemberList = objectDb.Query<DailyMember>();
-
-                isMatch = Convert.ToBoolean(objectDb.GetParameterValue("ismatch"));
+                return new DailyMemberViewModel
+                {
+                    DateString = date.ToLongDateString(),
+                    Data = objectDb.Query<DailyMember>(),
+                    isMatch = Convert.ToBoolean(objectDb.GetParameterValue("ismatch"))
+                };
             }
-
-            return dailyMemberList;
         }
 
-        public IEnumerable<DailyMemberIncomeAccess> CheckSumDailyMemberForIncomeAccess(DateTime date, out bool isMatch)
+        public DailyMemberIncomeAccessViewModel CheckSumDailyMemberForIncomeAccess(DateTime date)
         {
             const string SpName = "IA_CheckSum";
-
-            IEnumerable<DailyMemberIncomeAccess> dailyMemberIncomeAccessList;
 
             using (var objectDb = this.GetObjectDb(SpName))
             {
                 AssignParam(objectDb, date);
 
-                dailyMemberIncomeAccessList = objectDb.Query<DailyMemberIncomeAccess>();
-
-                isMatch = Convert.ToBoolean(objectDb.GetParameterValue("ismatch"));
+                return new DailyMemberIncomeAccessViewModel
+                {
+                    Data = objectDb.Query<DailyMemberIncomeAccess>(),
+                    isMatch = Convert.ToBoolean(objectDb.GetParameterValue("ismatch")),
+                    DateString = date.ToString()
+                };
             }
-
-            return dailyMemberIncomeAccessList;
-        }
-
-        private static void AssignParam(IObjectDb objectDb, DateTime date)
-        {
-            objectDb.AddInParameter("date", DbType.Date, date.Date);
-            objectDb.AddOutParameter("ismatch", DbType.Boolean, 4);
         }
     }
+}
 }

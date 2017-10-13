@@ -3,11 +3,12 @@
     using System;
     using System.Collections.Generic;
     using DTO;
+    using ViewModel;
 
     public interface IDailyMemberRepository
     {
-        IEnumerable<DailyMember> CheckSumDailyMemberFor12Bet(DateTime date, out bool isMatch);
+        DailyMemberViewModel CheckSumDailyMemberFor12Bet(DateTime date);
 
-        IEnumerable<DailyMemberIncomeAccess> CheckSumDailyMemberForIncomeAccess(DateTime date, out bool isMatch);
+        DailyMemberIncomeAccessViewModel CheckSumDailyMemberForIncomeAccess(DateTime date);
     }
 }

@@ -3,13 +3,12 @@
     using System.Collections.Generic;
     using DTO;
     using Fanex.Affiliate.DataService.CheckSum.Enum;
+    using ViewModel;
 
     public interface IEmailBuilder
     {
-        string Build(SystemType systemType, object dailyMemberList, int dayToAdd);
+        string GenerateDailyMemberContent(DailyMemberViewModel data);
 
-        string GenerateDailyMemberContent(IList<DailyMember> data, int dayToAdd);
-
-        string GenerateIncomeAccessContent(IList<DailyMemberIncomeAccess> data, int dayToAdd);
+        string GenerateDailyMemberIncomeAccessContent(DailyMemberIncomeAccessViewModel data);
     }
 }

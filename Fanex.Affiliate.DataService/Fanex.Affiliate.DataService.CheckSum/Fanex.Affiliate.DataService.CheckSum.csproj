@@ -102,8 +102,10 @@
     <Compile Include="Utilities\IEmailBuilder.cs" />
     <Compile Include="Utilities\IFileSystem.cs" />
     <Compile Include="Utilities\IHtmlRender.cs" />
+    <Compile Include="Utilities\HtmlRender.cs" />
     <Compile Include="ViewModel\DailyMemberIncomeAccessViewModel.cs" />
     <Compile Include="ViewModel\DailyMemberViewModel.cs" />
+    <Compile Include="ViewModel\BaseViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
