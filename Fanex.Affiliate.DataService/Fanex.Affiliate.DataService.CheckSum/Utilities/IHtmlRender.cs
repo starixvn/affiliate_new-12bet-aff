@@ -4,6 +4,6 @@
 
     public interface IRazorWrapper
     {
-        string Compile(string templateSource, string name, Type modelType = null, object model = null);
+        string Generate(string templateContent, string name, object viewModel);
     }
 }
