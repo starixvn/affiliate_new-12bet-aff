@@ -2,7 +2,6 @@
 {
     using System;
     using System.Configuration;
-    using Fanex.Affiliate.DataService.CheckSum.Interface;
 
     public class AppSettings : IAppSettings
     {

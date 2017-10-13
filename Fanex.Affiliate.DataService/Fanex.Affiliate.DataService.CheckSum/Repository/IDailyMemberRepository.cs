@@ -1,12 +1,13 @@
 ﻿namespace Fanex.Affiliate.DataService.CheckSum.Repository
 {
     using System;
-    using System.Data;
+    using System.Collections.Generic;
+    using DTO;
 
     public interface IDailyMemberRepository
     {
-        DataTable CheckSumDailyMemberFor12Bet(DateTime date, out bool isMatch);
+        IEnumerable<DailyMember> CheckSumDailyMemberFor12Bet(DateTime date, out bool isMatch);
 
-        DataTable CheckSumDailyMemberForIncomeAccess(DateTime date, out bool isMatch);
+        IEnumerable<DailyMemberIncomeAccess> CheckSumDailyMemberForIncomeAccess(DateTime date, out bool isMatch);
     }
 }

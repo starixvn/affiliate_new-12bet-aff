@@ -38,6 +38,10 @@
       <HintPath>..\packages\Fanex.Logging.1.0.4\lib\net40\Fanex.Logging.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Fanex.MailDeliver.MailClient, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fanex.MailDeliver.MailClient.1.0.0.2\lib\net40\Fanex.MailDeliver.MailClient.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\EnterpriseLibrary.Common.5.0.414.0\lib\net40\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
       <Private>True</Private>
@@ -62,9 +66,17 @@
       <HintPath>..\packages\EnterpriseLibrary.Unity.5.0.414.0\lib\net40\Microsoft.Practices.Unity.Interception.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="RazorEngine, Version=3.10.0.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
+      <HintPath>..\packages\RazorEngine.3.10.0\lib\net45\RazorEngine.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.0.0\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -74,24 +86,30 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DailyMemberCheckSumRunner.cs" />
+    <Compile Include="DTO\DailyMember.cs" />
+    <Compile Include="DTO\DailyMemberIncomeAccess.cs" />
+    <Compile Include="Enum\SystemType.cs" />
+    <Compile Include="Repository\BaseRepository.cs" />
     <Compile Include="Utilities\EmailContentBuilder.cs" />
+    <Compile Include="Utilities\FileSystem.cs" />
     <Compile Include="Utilities\IAppSettings.cs" />
     <Compile Include="IDailyMemberCheckSumRunner.cs" />
     <Compile Include="Repository\IDailyMemberRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\DailyMemberRepository.cs" />
     <Compile Include="Utilities\AppSettings.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Fanex.Affiliate.DataService.Common\Fanex.Affiliate.DataService.Common.csproj">
-      <Project>{630695c3-9f88-42ad-aaaa-5ad08890935f}</Project>
-      <Name>Fanex.Affiliate.DataService.Common</Name>
-    </ProjectReference>
+    <Compile Include="Utilities\IEmailContentBuilder.cs" />
+    <Compile Include="Utilities\IFileSystem.cs" />
+    <Compile Include="Utilities\IRazorWrapper.cs" />
+    <Compile Include="Utilities\RazorWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Template\DailyMemberEmail.cshtml" />
+    <None Include="Template\DailyMemberIncomeAccessEmail.cshtml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

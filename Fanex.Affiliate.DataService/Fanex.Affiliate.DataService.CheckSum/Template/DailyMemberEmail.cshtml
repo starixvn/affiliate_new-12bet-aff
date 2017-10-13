@@ -1,0 +1,34 @@
+﻿@{ 
+    var data = Model.Data;
+}
+
+This is an auto-mail. Please do not reply.
+<br /><br />
+There is an error occur when checking sum data between <b>Bettrans and MemberDaily in @Model.DateString</b>.
+<br /><br />
+<table width="100%" border="1px">
+    <tr bgcolor="#e1ebf2">
+        <td>Deposit</td>
+        <td>Withdrawal</td>
+        <td>Bonus</td>
+        <td>Adjustment</td>
+        <td>Turnover</td>
+        <td>Winlost</td>
+        <td>Description</td>
+    </tr>
+
+    @foreach (var item in data)
+    {
+        <tr>
+            <td>@item.Deposit</td>
+            <td>@item.Withdrawal</td>
+            <td>@item.Bonus</td>
+            <td>@item.Adjustment</td>
+            <td>@item.Turnover</td>
+            <td>@item.Winlost</td>
+            <td>@item.Description</td>
+        </tr>
+    }
+</table>
+<br /><br />
+<b>Auto Email Checksum.</b>

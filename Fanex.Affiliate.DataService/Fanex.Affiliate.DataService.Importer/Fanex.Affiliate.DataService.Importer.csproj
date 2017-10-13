@@ -83,6 +83,7 @@
     <Compile Include="DTO\ColumnName.cs" />
     <Compile Include="DTO\ResultInfo.cs" />
     <Compile Include="Enum\DateType.cs" />
+    <Compile Include="Enum\SystemType.cs" />
     <Compile Include="ICasinoDataImportingRunner.cs" />
     <Compile Include="Repository\BaseRepository.cs" />
     <Compile Include="Utilities\IAppSettings.cs" />
@@ -91,12 +92,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\CasinoDataRepository.cs" />
     <Compile Include="Utilities\AppSettings.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Fanex.Affiliate.DataService.Common\Fanex.Affiliate.DataService.Common.csproj">
-      <Project>{630695C3-9F88-42AD-AAAA-5AD08890935F}</Project>
-      <Name>Fanex.Affiliate.DataService.Common</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

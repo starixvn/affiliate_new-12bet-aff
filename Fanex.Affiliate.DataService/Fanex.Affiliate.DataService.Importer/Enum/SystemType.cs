@@ -1,4 +1,4 @@
-﻿namespace Fanex.Affiliate.DataService.Common.Enum
+﻿namespace Fanex.Affiliate.DataService.Importer.Enum
 {
     public enum SystemType
     {

@@ -1,122 +1,95 @@
 ﻿namespace Fanex.Affiliate.DataService.CheckSum
 {
     using System;
-    using System.Data;
-    using System.Data.SqlClient;
-    using System.Text;
-    using Common.DTO;
-    using Common.Enum;
-    using Common.Ultilities;
+    using Enum;
     using Fanex.Affiliate.DataService.CheckSum.Interface;
+    using Logging;
+    using MailDeliver.MailClient.API;
+    using MailDeliver.Model;
     using Repository;
     using Utilities;
 
     public class DailyMemberCheckSumRunner : IDailyMemberCheckSumRunner
     {
-        private readonly IAppSettings _appSettings;
         private readonly IDailyMemberRepository _dailyMemberRepository;
-        private readonly IDataServiceFactory _dataServiceFactory;
+        private readonly IEmailContentBuilder _emailContentBuilder;
+        private readonly IAppSettings _appSettings;
+        private readonly ILogger _logger;
+        private readonly IMailDeliver _mailDeliver;
 
-        public DailyMemberCheckSumRunner() : this(null, null, null)
+        public DailyMemberCheckSumRunner() : this(null, null, null, null, null)
         {
         }
 
         public DailyMemberCheckSumRunner(
             IDailyMemberRepository dailyMemberRepository,
+            IEmailContentBuilder emailContentBuilder,
             IAppSettings appSettings,
-            IDataServiceFactory dataServiceFactory)
+            ILogger logger,
+            IMailDeliver mailDeliver)
         {
             _appSettings = appSettings ?? new AppSettings();
             _dailyMemberRepository = dailyMemberRepository ?? new DailyMemberRepository();
-            _dataServiceFactory = dataServiceFactory ?? new DataServiceFactory();
+            _emailContentBuilder = emailContentBuilder ?? new EmailContentBuilder();
+            _logger = logger ?? Logger.Log;
+            _mailDeliver = mailDeliver ?? new MailDeliver();
         }
-
-        protected IDataServiceLogger Logger => _dataServiceFactory.GetLogger();
-
-        protected IEmailSender EmailSender => _dataServiceFactory.GetEmailSender();
 
         public void Run()
         {
-            try
+            // decide time to compare data(check data 2 times: first at 11:00-12:00, second at 23:00-24:00)
+            if (DateTime.Now.Hour == _appSettings.CheckingTime || _appSettings.ForTest)
             {
-                // decide time to compare data(check data 2 times: first at 11:00-12:00, second at 23:00-24:00)
-                if (DateTime.Now.Hour == _appSettings.CheckingTime || _appSettings.ForTest)
-                {
-                    DateTime date = DateTime.Now.AddDays(_appSettings.ForDate);
+                DateTime date = DateTime.Now.AddDays(_appSettings.ForDate);
 
-                    RunCheckSumBySystem(SystemType.Affiliate12Bet, date);
-                    RunCheckSumBySystem(SystemType.IncomeAccess, date);
-                }
-            }
-            catch (Exception ex)
-            {
-                WriteErrorLog("AFFCheckSum", ex);
-                SendMail(ex.Message);
+                RunCheckSumBySystem(SystemType.Affiliate12Bet, date);
+                RunCheckSumBySystem(SystemType.IncomeAccess, date);
             }
         }
 
         private void RunCheckSumBySystem(SystemType systemType, DateTime date)
         {
             bool isMatch = false;
-            DataTable dataTable = null;
+            object dailyMemberData = null;
             var logTitle = string.Empty;
 
             switch (systemType)
             {
                 case SystemType.Affiliate12Bet:
-                    dataTable = _dailyMemberRepository.CheckSumDailyMemberFor12Bet(date, out isMatch);
+                    dailyMemberData = _dailyMemberRepository.CheckSumDailyMemberFor12Bet(date, out isMatch);
                     logTitle = "AffCheckSum run for date:";
                     break;
 
                 case SystemType.IncomeAccess:
-                    dataTable = _dailyMemberRepository.CheckSumDailyMemberForIncomeAccess(date, out isMatch);
+                    dailyMemberData = _dailyMemberRepository.CheckSumDailyMemberForIncomeAccess(date, out isMatch);
                     logTitle = "Income Access check sum run for date:";
                     break;
             }
 
             if (!isMatch)
             {
-                var emailContent = EmailContentBuilder.Build(systemType, dataTable, _appSettings.ForDate);
+                var emailContent = _emailContentBuilder.Build(systemType, dailyMemberData, _appSettings.ForDate);
                 SendMail(emailContent);
             }
 
-            Logger.LogInfo($"{logTitle} {DateTime.Now.AddDays(_appSettings.ForDate).ToShortDateString()}; IsMatch: {isMatch}");
-        }
-
-        private void WriteErrorLog(string message, Exception exception)
-        {
-            var content = new StringBuilder().AppendLine(message).AppendLine(exception.Message);
-
-            content.AppendLine("SOURCE: " + exception.Source)
-                   .AppendLine("TARGETSITE: " + exception.TargetSite)
-                   .AppendLine("STACKTRACE: " + exception.StackTrace);
-
-            var sqlException = exception as SqlException;
-            if (sqlException != null)
-            {
-                content.AppendLine("Procedure: " + sqlException.Procedure)
-                    .AppendLine("Line Number: " + sqlException.LineNumber)
-                    .AppendLine("Server: " + sqlException.Server);
-            }
-
-            Logger.LogError(content.ToString(), exception);
+            _logger.Info($"{logTitle} {DateTime.Now.AddDays(_appSettings.ForDate).ToShortDateString()}; IsMatch: {isMatch}");
         }
 
         private void SendMail(string content)
         {
             var title = _appSettings.SubjectMailError;
 
-            var email = new Email
+            var email = new MailRecord
             {
-                To = _appSettings.ToMail,
+                MailTo = _appSettings.ToMail,
                 Subject = title,
                 Title = title,
                 Body = content,
-                Bcc = _appSettings.BccMail,
-                Cc = _appSettings.CcMail
+                MailBcc = _appSettings.BccMail,
+                MailCc = _appSettings.CcMail
             };
 
-            EmailSender.Send(email);
+            _mailDeliver.SendMail(email);
         }
     }
 }
