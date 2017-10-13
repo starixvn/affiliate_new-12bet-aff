@@ -15,10 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.Affiliate.DataService
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.Affiliate.DataService.WinFormApp", "Fanex.Affiliate.DataService.WinFormApp\Fanex.Affiliate.DataService.WinFormApp.csproj", "{97761070-E3C3-4396-97AB-CDF8D4BF857E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.Affiliate.DataService.CheckSum.UnitTests", "Fanex.Affiliate.DataService.CheckSum.UnitTests\Fanex.Affiliate.DataService.CheckSum.UnitTests.csproj", "{8E006EC6-D173-43F2-93EF-21789D9DA43B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.Affiliate.DataService.Importer.UnitTests", "Fanex.Affiliate.DataService.Importer.UnitTests\Fanex.Affiliate.DataService.Importer.UnitTests.csproj", "{6C197FE1-17CE-4EC3-9B5B-881B2D88B34A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,14 +45,6 @@ Global
 		{97761070-E3C3-4396-97AB-CDF8D4BF857E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97761070-E3C3-4396-97AB-CDF8D4BF857E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97761070-E3C3-4396-97AB-CDF8D4BF857E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8E006EC6-D173-43F2-93EF-21789D9DA43B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8E006EC6-D173-43F2-93EF-21789D9DA43B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8E006EC6-D173-43F2-93EF-21789D9DA43B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8E006EC6-D173-43F2-93EF-21789D9DA43B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6C197FE1-17CE-4EC3-9B5B-881B2D88B34A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6C197FE1-17CE-4EC3-9B5B-881B2D88B34A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6C197FE1-17CE-4EC3-9B5B-881B2D88B34A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6C197FE1-17CE-4EC3-9B5B-881B2D88B34A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
