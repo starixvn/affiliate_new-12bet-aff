@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using DTO;
-    using Fanex.Affiliate.DataService.CheckSum.Enum;
     using ViewModel;
 
     public interface IEmailBuilder

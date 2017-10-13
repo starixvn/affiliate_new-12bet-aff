@@ -5,7 +5,6 @@
     using System.Globalization;
     using System.Linq;
     using DTO;
-    using Enum;
     using ViewModel;
 
     public class EmailBuilder : IEmailBuilder
@@ -13,14 +12,10 @@
         private readonly IFileSystem _fileSystem;
         private readonly IHtmlRender _htmlRender;
 
-        public EmailBuilder() : this(null, null)
-        {
-        }
-
         public EmailBuilder(IFileSystem fileSystem, IHtmlRender razorWrapper)
         {
-            _fileSystem = fileSystem ?? new FileSystem();
-            _htmlRender = razorWrapper ?? new HtmlRender();
+            _fileSystem = fileSystem;
+            _htmlRender = razorWrapper;
         }
 
         public string GenerateDailyMemberContent(DailyMemberViewModel data)

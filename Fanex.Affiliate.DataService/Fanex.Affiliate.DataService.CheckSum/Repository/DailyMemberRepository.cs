@@ -18,7 +18,6 @@ namespace Fanex.Affiliate.DataService.CheckSum.Repository
         public DailyMemberViewModel CheckSumDailyMemberFor12Bet(DateTime date)
         {
             const string SpName = "Aff_CheckSum";
-            IEnumerable<DailyMember> dailyMemberList;
 
             using (var objectDb = this.GetObjectDb(SpName))
             {
