@@ -90,18 +90,20 @@
     <Compile Include="DTO\DailyMemberIncomeAccess.cs" />
     <Compile Include="Enum\SystemType.cs" />
     <Compile Include="Repository\BaseRepository.cs" />
-    <Compile Include="Utilities\EmailContentBuilder.cs" />
+    <Compile Include="Utilities\EmailBuilder.cs" />
     <Compile Include="Utilities\FileSystem.cs" />
+    <Compile Include="Utilities\HtmlRender.cs" />
     <Compile Include="Utilities\IAppSettings.cs" />
     <Compile Include="IDailyMemberCheckSumRunner.cs" />
     <Compile Include="Repository\IDailyMemberRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\DailyMemberRepository.cs" />
     <Compile Include="Utilities\AppSettings.cs" />
-    <Compile Include="Utilities\IEmailContentBuilder.cs" />
+    <Compile Include="Utilities\IEmailBuilder.cs" />
     <Compile Include="Utilities\IFileSystem.cs" />
-    <Compile Include="Utilities\IRazorWrapper.cs" />
-    <Compile Include="Utilities\RazorWrapper.cs" />
+    <Compile Include="Utilities\IHtmlRender.cs" />
+    <Compile Include="ViewModel\DailyMemberIncomeAccessViewModel.cs" />
+    <Compile Include="ViewModel\DailyMemberViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

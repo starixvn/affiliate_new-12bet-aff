@@ -1,8 +1,4 @@
-﻿@{ 
-    var data = Model.Data;
-}
-
-This is an auto-mail. Please do not reply.
+﻿This is an auto-mail. Please do not reply.
 <br /><br />
 There is an error occur when checking sum data between <b>Bettrans and MemberDaily in @Model.DateString</b>.
 <br /><br />
@@ -17,15 +13,15 @@ There is an error occur when checking sum data between <b>Bettrans and MemberDai
         <td>Description</td>
     </tr>
 
-    @foreach (var item in data)
+    @foreach (var item in Model.Data)
     {
         <tr>
-            <td>@item.Deposit</td>
-            <td>@item.Withdrawal</td>
-            <td>@item.Bonus</td>
-            <td>@item.Adjustment</td>
-            <td>@item.Turnover</td>
-            <td>@item.Winlost</td>
+            <td>@item.Deposit.ToString("N2")</td>
+            <td>@item.Withdrawal.ToString("N2")</td>
+            <td>@item.Bonus.ToString("N2")</td>
+            <td>@item.Adjustment.ToString("N2")</td>
+            <td>@item.Turnover.ToString("N2")</td>
+            <td>@item.Winlost.ToString("N2")</td>
             <td>@item.Description</td>
         </tr>
     }
