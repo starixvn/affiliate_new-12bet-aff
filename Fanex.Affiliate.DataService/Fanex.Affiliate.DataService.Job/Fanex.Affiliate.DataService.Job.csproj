@@ -76,6 +76,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ImportingInHourJob.cs" />
     <Compile Include="InHoursJob.cs" />
     <Compile Include="JobScheduler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

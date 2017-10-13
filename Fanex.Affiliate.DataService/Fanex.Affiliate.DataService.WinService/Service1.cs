@@ -1,16 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Linq;
 using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
 using Fanex.Affiliate.DataService.CheckSum;
+using Fanex.Affiliate.DataService.Importer;
 using Fanex.Affiliate.DataService.Job;
 using Fanex.Logging;
-using Quartz;
 
 namespace Fanex.Affiliate.DataService.WinService
 {
@@ -18,19 +11,21 @@ namespace Fanex.Affiliate.DataService.WinService
     {
         private readonly IDailyMemberCheckSumRunner _dailyMemberCheckSumRunner;
         private readonly JobScheduler _scheduler;
+        private readonly IDataImportingRunner _dataImportingRunner;
 
         public Service1()
         {
             InitializeComponent();
             _scheduler = new JobScheduler();
             _dailyMemberCheckSumRunner = new DailyMemberCheckSumRunner();
+            _dataImportingRunner = new DataImportingRunner();
         }
 
         protected override void OnStart(string[] args)
         {
             try
             {
-                _scheduler.Start(_dailyMemberCheckSumRunner);
+                _scheduler.Start(_dailyMemberCheckSumRunner, _dataImportingRunner);
             }
             catch (Exception exception)
             {

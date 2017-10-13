@@ -103,6 +103,10 @@
       <Project>{6A965DB8-4270-4859-97C1-CD22C4B50969}</Project>
       <Name>Fanex.Affiliate.DataService.CheckSum</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Fanex.Affiliate.DataService.Importer\Fanex.Affiliate.DataService.Importer.csproj">
+      <Project>{8278F547-CD9E-48EC-8184-E10F273683F7}</Project>
+      <Name>Fanex.Affiliate.DataService.Importer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fanex.Affiliate.DataService.Job\Fanex.Affiliate.DataService.Job.csproj">
       <Project>{8df4e9c0-19e3-4722-9cb1-252c087270fb}</Project>
       <Name>Fanex.Affiliate.DataService.Job</Name>

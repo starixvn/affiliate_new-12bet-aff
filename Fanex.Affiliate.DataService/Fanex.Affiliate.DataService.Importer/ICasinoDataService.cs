@@ -1,10 +1,13 @@
 ﻿namespace Fanex.Affiliate.DataService.Importer
 {
+    using System;
+    using System.Xml;
     using DTO;
-    using Fanex.Affiliate.DataService.Importer.Enum;
 
     public interface ICasinoDataService
     {
-        ResultInfo ImportData(DateType dateType);
+        ResultInfo ImportData(DateTime date);
+
+        XmlDocument ConvertCSVToXml(string fileName);
     }
 }

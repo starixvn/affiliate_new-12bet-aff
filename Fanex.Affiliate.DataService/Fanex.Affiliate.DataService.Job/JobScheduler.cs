@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Fanex.Affiliate.DataService.CheckSum;
+using Fanex.Affiliate.DataService.Importer;
 using Quartz;
 using Quartz.Impl;
 
@@ -18,12 +15,19 @@ namespace Fanex.Affiliate.DataService.Job
             _scheduler = StdSchedulerFactory.GetDefaultScheduler();
         }
 
-        public void Start(IDailyMemberCheckSumRunner dailyMemberCheckSumRunner)
+        public void Start(IDailyMemberCheckSumRunner dailyMemberCheckSumRunner, IDataImportingRunner dataImportingRunner)
         {
-            var job = JobBuilder.Create<InHoursJob>()
+            var checkSumJob = JobBuilder.Create<InHoursJob>()
                 .UsingJobData(new JobDataMap(new Dictionary<string, IDailyMemberCheckSumRunner>
                 {
                     { nameof(dailyMemberCheckSumRunner), dailyMemberCheckSumRunner}
+                }))
+                .Build();
+
+            var importJob = JobBuilder.Create<ImportingInHourJob>()
+                .UsingJobData(new JobDataMap(new Dictionary<string, IDataImportingRunner>
+                {
+                    { nameof(dataImportingRunner), dataImportingRunner}
                 }))
                 .Build();
 
@@ -32,7 +36,8 @@ namespace Fanex.Affiliate.DataService.Job
                    .RepeatForever())
                    .Build();
 
-            _scheduler.ScheduleJob(job, trigger);
+            _scheduler.ScheduleJob(checkSumJob, trigger);
+            _scheduler.ScheduleJob(importJob, trigger);
             _scheduler.Start();
         }
 

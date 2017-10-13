@@ -22,7 +22,7 @@ namespace Fanex.Affiliate.DataService.Job
             }
             catch (Exception exception)
             {
-                LogService.Error(GetExceptionMessage(exception), exception.InnerException);
+                LogService.Error("CheckSum Error - " + GetExceptionMessage(exception), exception.InnerException);
             }
         }
 

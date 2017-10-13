@@ -73,14 +73,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CasinoDataImportingRunner.cs" />
+    <Compile Include="DataImportingRunner.cs" />
     <Compile Include="CasinoDataService.cs" />
     <Compile Include="DTO\CasinoDataMetaModel.cs" />
     <Compile Include="DTO\ColumnName.cs" />
     <Compile Include="DTO\ResultInfo.cs" />
-    <Compile Include="Enum\DateType.cs" />
     <Compile Include="Enum\SystemType.cs" />
-    <Compile Include="ICasinoDataImportingRunner.cs" />
+    <Compile Include="IDataImportingRunner.cs" />
     <Compile Include="Repository\BaseRepository.cs" />
     <Compile Include="Utilities\IAppSettings.cs" />
     <Compile Include="Repository\ICasinoDataRepository.cs" />

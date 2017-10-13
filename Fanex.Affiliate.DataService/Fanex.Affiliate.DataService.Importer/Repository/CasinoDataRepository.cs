@@ -1,38 +1,12 @@
 ﻿namespace Fanex.Affiliate.DataService.Importer.Repository
 {
     using System.Data;
-    using Enum;
     using Fanex.Affiliate.DataService.Importer.DTO;
     using Fanex.Data;
 
     public class CasinoDataRepository : BaseRepository, ICasinoDataRepository
     {
-        public ResultInfo ImportCasinoData(SystemType systemType, CasinoDataMetaModel metaModel)
-        {
-            switch (systemType)
-            {
-                case SystemType.All:
-                    var result = ImportDataFor12Bet(metaModel);
-
-                    if (result.IsSuccessful)
-                    {
-                        return ImportDataForIncomeAccess(metaModel);
-                    }
-
-                    return result;
-
-                case SystemType.Affiliate12Bet:
-                    return ImportDataFor12Bet(metaModel);
-
-                case SystemType.IncomeAccess:
-                    return ImportDataForIncomeAccess(metaModel);
-
-                default:
-                    return new ResultInfo { Code = 999, Message = "System Type is not defined" };
-            }
-        }
-
-        private ResultInfo ImportDataFor12Bet(CasinoDataMetaModel metaModel)
+        public ResultInfo ImportDataFor12Bet(CasinoDataMetaModel metaModel)
         {
             const string SpName = "Aff_CasinoImportData";
 
@@ -50,7 +24,7 @@
             }
         }
 
-        private ResultInfo ImportDataForIncomeAccess(CasinoDataMetaModel metaModel)
+        public ResultInfo ImportDataForIncomeAccess(CasinoDataMetaModel metaModel)
         {
             const string SpName = "Task_Aff_MemberDailyCasino_IA";
 
