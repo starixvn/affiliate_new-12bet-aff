@@ -12,10 +12,14 @@
         private readonly IFileSystem _fileSystem;
         private readonly IHtmlRender _htmlRender;
 
-        public EmailBuilder(IFileSystem fileSystem, IHtmlRender razorWrapper)
+        public EmailBuilder() : this(null, null)
         {
-            _fileSystem = fileSystem;
-            _htmlRender = razorWrapper;
+        }
+
+        public EmailBuilder(IFileSystem fileSystem, IHtmlRender htmlRender)
+        {
+            _fileSystem = fileSystem ?? new FileSystem();
+            _htmlRender = htmlRender ?? new HtmlRender();
         }
 
         public string GenerateDailyMemberContent(DailyMemberViewModel data)

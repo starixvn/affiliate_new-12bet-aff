@@ -4,16 +4,18 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
+using Fanex.Data.Configuration;
 
 namespace Fanex.Affiliate.DataService.WinService
 {
-    static class Program
+    internal static class Program
     {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        static void Main()
+        private static void Main()
         {
+            DbSettingProviderManager.Current.Start();
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {

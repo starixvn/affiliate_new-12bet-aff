@@ -1,4 +1,4 @@
-﻿namespace Fanex.Affiliate.DataService.CheckSum.Interface
+﻿namespace Fanex.Affiliate.DataService.CheckSum
 {
     public interface IDailyMemberCheckSumRunner
     {

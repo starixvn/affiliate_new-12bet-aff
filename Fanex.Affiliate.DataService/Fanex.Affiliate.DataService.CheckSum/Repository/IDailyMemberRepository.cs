@@ -1,8 +1,6 @@
 ﻿namespace Fanex.Affiliate.DataService.CheckSum.Repository
 {
     using System;
-    using System.Collections.Generic;
-    using DTO;
     using ViewModel;
 
     public interface IDailyMemberRepository

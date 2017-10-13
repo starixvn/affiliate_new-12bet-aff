@@ -76,7 +76,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DailyCheckSum.cs" />
+    <Compile Include="InHoursJob.cs" />
+    <Compile Include="JobScheduler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

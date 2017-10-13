@@ -1,30 +1,31 @@
 ﻿namespace Fanex.Affiliate.DataService.CheckSum
 {
     using System;
-    using Fanex.Affiliate.DataService.CheckSum.Interface;
     using MailDeliver.MailClient.API;
     using MailDeliver.Model;
     using Repository;
     using Utilities;
 
-    public class DailyMemberCheckSumRunner : IDailyMemberCheckSumRunner, IDisposable
+    public class DailyMemberCheckSumRunner : IDailyMemberCheckSumRunner
     {
         private readonly IDailyMemberRepository _dailyMemberRepository;
         private readonly IEmailBuilder _emailBuilder;
         private readonly IAppSettings _appSettings;
-        private readonly IMailDeliver _mailDeliver;
         private const string NotFoundError = "Not found discrepancy data";
+
+        public DailyMemberCheckSumRunner() : this(null, null, null)
+        {
+        }
 
         public DailyMemberCheckSumRunner(
             IDailyMemberRepository dailyMemberRepository,
             IEmailBuilder emailBuilder,
-            IAppSettings appSettings,
-            IMailDeliver mailDeliver)
+            IAppSettings appSettings
+           )
         {
-            _appSettings = appSettings;
-            _dailyMemberRepository = dailyMemberRepository;
-            _emailBuilder = emailBuilder;
-            _mailDeliver = mailDeliver;
+            _appSettings = appSettings ?? new AppSettings();
+            _dailyMemberRepository = dailyMemberRepository ?? new DailyMemberRepository();
+            _emailBuilder = emailBuilder ?? new EmailBuilder();
         }
 
         public void Run()
@@ -66,16 +67,9 @@
                 MailCc = _appSettings.CcMail
             };
 
-            _mailDeliver.SendMail(email);
-        }
-
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
-
-            if (_mailDeliver != null)
+            using (var mailDeliver = new MailDeliver())
             {
-                ((MailDeliver)_mailDeliver).Dispose();
+                mailDeliver.SendMail(email);
             }
         }
     }
