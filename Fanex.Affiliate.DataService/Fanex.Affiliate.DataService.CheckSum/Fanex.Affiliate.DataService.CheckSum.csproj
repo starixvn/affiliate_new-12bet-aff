@@ -92,7 +92,6 @@
     <Compile Include="Repository\BaseRepository.cs" />
     <Compile Include="Utilities\EmailBuilder.cs" />
     <Compile Include="Utilities\FileSystem.cs" />
-    <Compile Include="Utilities\HtmlRender.cs" />
     <Compile Include="Utilities\IAppSettings.cs" />
     <Compile Include="IDailyMemberCheckSumRunner.cs" />
     <Compile Include="Repository\IDailyMemberRepository.cs" />
