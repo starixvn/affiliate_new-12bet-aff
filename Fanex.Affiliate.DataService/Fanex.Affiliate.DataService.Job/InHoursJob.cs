@@ -1,5 +1,6 @@
 ﻿using System;
 using Fanex.Affiliate.DataService.CheckSum;
+using Fanex.Affiliate.DataService.Importer;
 using Fanex.Logging;
 using Quartz;
 
@@ -17,12 +18,14 @@ namespace Fanex.Affiliate.DataService.Job
             {
                 var dataMap = context.JobDetail.JobDataMap;
                 var sumService = (IDailyMemberCheckSumRunner)dataMap.Get("dailyMemberCheckSumRunner");
+                var importService = (IDataImportingRunner)dataMap.Get("dataImportingRunner");
 
+                importService.Run();
                 sumService.Run();
             }
             catch (Exception exception)
             {
-                LogService.Error("CheckSum Error - " + GetExceptionMessage(exception), exception.InnerException);
+                LogService.Error(GetExceptionMessage(exception), exception.InnerException);
             }
         }
 

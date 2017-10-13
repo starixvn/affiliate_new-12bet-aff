@@ -17,27 +17,22 @@ namespace Fanex.Affiliate.DataService.Job
 
         public void Start(IDailyMemberCheckSumRunner dailyMemberCheckSumRunner, IDataImportingRunner dataImportingRunner)
         {
-            var checkSumJob = JobBuilder.Create<InHoursJob>()
+            var job = JobBuilder.Create<InHoursJob>()
                 .UsingJobData(new JobDataMap(new Dictionary<string, IDailyMemberCheckSumRunner>
                 {
                     { nameof(dailyMemberCheckSumRunner), dailyMemberCheckSumRunner}
                 }))
-                .Build();
-
-            var importJob = JobBuilder.Create<ImportingInHourJob>()
                 .UsingJobData(new JobDataMap(new Dictionary<string, IDataImportingRunner>
                 {
                     { nameof(dataImportingRunner), dataImportingRunner}
-                }))
-                .Build();
+                })).Build();
 
             var trigger = TriggerBuilder.Create()
                    .WithSimpleSchedule(a => a.WithIntervalInHours(1)
                    .RepeatForever())
                    .Build();
 
-            _scheduler.ScheduleJob(checkSumJob, trigger);
-            _scheduler.ScheduleJob(importJob, trigger);
+            _scheduler.ScheduleJob(job, trigger);
             _scheduler.Start();
         }
 

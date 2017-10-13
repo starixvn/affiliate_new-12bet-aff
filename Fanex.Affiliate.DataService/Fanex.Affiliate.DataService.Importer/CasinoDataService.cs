@@ -39,7 +39,7 @@
 
             var systemType = (SystemType)_appSettings.ForSystem;
 
-            return GetResult(systemType, metaModel);
+            return SyncDataToDB(systemType, metaModel);
         }
 
         private string DownloadFile(DateTime date)
@@ -51,7 +51,7 @@
             }
 
             var fileName = $"{path}Casino {date.ToString("yyyyMMdd")}{_appSettings.FileExtension}";
-            string downloadURL = _appSettings.DailyDataUrl.Replace("{date}", date.ToString("yyyy-MM-dd"));
+            var downloadURL = _appSettings.DailyDataUrl.Replace("{date}", date.ToString("yyyy-MM-dd"));
             using (WebClient wc = new WebClient())
             {
                 wc.Proxy = null;
@@ -63,49 +63,49 @@
 
         public XmlDocument ConvertCSVToXml(string fileName)
         {
-            XmlDocument doc = new XmlDocument();
-            XmlElement root = doc.CreateElement("root");
+            var doc = new XmlDocument();
+            var root = doc.CreateElement("root");
             doc.AppendChild(root);
 
-            StreamReader stream = new StreamReader(fileName);
-
-            var hsColumnName = new Hashtable();
-            string[] lineContent = stream.ReadLine().Split(',');
-            for (int i = 0; i < lineContent.Length; i++)
+            using (var stream = new StreamReader(fileName))
             {
-                if (!hsColumnName.ContainsKey(lineContent[i]))
-                    hsColumnName.Add(lineContent[i], i);//Map order column to Column name
-            }
-
-            var indexDate = GetIndexOfColName(hsColumnName, ColumnName.Date);
-            var indexUsername = GetIndexOfColName(hsColumnName, ColumnName.Username);
-            var indexTurnover = GetIndexOfColName(hsColumnName, ColumnName.Turnover);
-            var indexDeposit = GetIndexOfColName(hsColumnName, ColumnName.Deposit);
-            var indexBonus = GetIndexOfColName(hsColumnName, ColumnName.Bonus);
-            var indexIAWinlost = GetIndexOfColName(hsColumnName, ColumnName.IAWinlost);
-            var indexWinlostAff = GetIndexOfColName(hsColumnName, ColumnName.Winlost);
-
-            while (!stream.EndOfStream)
-            {
-                lineContent = stream.ReadLine().Split(',');
-                if (!string.IsNullOrEmpty(lineContent[GetIndexOfColName(hsColumnName, "Username")]))
+                var hsColumnName = new Hashtable();
+                var lineContent = stream.ReadLine().Split(',');
+                for (int i = 0; i < lineContent.Length; i++)
                 {
-                    XmlElement transNode = doc.CreateElement("trans");
-                    transNode.SetAttribute("date", lineContent[indexDate]);
-                    transNode.SetAttribute("username", lineContent[indexUsername]);
-                    transNode.SetAttribute("turnover", lineContent[indexTurnover]);
-                    transNode.SetAttribute("deposit", lineContent[indexDeposit]);
-                    transNode.SetAttribute("bonus", lineContent[indexBonus]);
-                    transNode.SetAttribute("winlostaff", lineContent[indexWinlostAff]);
-                    transNode.SetAttribute("winlost", lineContent[indexIAWinlost]);
-                    root.AppendChild(transNode);
+                    if (!hsColumnName.ContainsKey(lineContent[i]))
+                        hsColumnName.Add(lineContent[i], i);//Map order column to Column name
                 }
+
+                var indexDate = GetIndexOfColName(hsColumnName, ColumnName.Date);
+                var indexUsername = GetIndexOfColName(hsColumnName, ColumnName.Username);
+                var indexTurnover = GetIndexOfColName(hsColumnName, ColumnName.Turnover);
+                var indexDeposit = GetIndexOfColName(hsColumnName, ColumnName.Deposit);
+                var indexBonus = GetIndexOfColName(hsColumnName, ColumnName.Bonus);
+                var indexIAWinlost = GetIndexOfColName(hsColumnName, ColumnName.IAWinlost);
+                var indexWinlostAff = GetIndexOfColName(hsColumnName, ColumnName.Winlost);
+
+                while (!stream.EndOfStream)
+                {
+                    lineContent = stream.ReadLine().Split(',');
+                    if (!string.IsNullOrEmpty(lineContent[GetIndexOfColName(hsColumnName, "Username")]))
+                    {
+                        var transNode = doc.CreateElement("trans");
+                        transNode.SetAttribute("date", lineContent[indexDate]);
+                        transNode.SetAttribute("username", lineContent[indexUsername]);
+                        transNode.SetAttribute("turnover", lineContent[indexTurnover]);
+                        transNode.SetAttribute("deposit", lineContent[indexDeposit]);
+                        transNode.SetAttribute("bonus", lineContent[indexBonus]);
+                        transNode.SetAttribute("winlostaff", lineContent[indexWinlostAff]);
+                        transNode.SetAttribute("winlost", lineContent[indexIAWinlost]);
+                        root.AppendChild(transNode);
+                    }
+                }
+                return doc;
             }
-            stream.Close();
-            return doc;
         }
 
-        private ResultInfo GetResult(SystemType systemType, CasinoDataMetaModel metaModel)
+        private ResultInfo SyncDataToDB(SystemType systemType, CasinoDataMetaModel metaModel)
         {
             switch (systemType)
             {

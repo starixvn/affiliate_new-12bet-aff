@@ -41,7 +41,7 @@
             }
         }
 
-        private void AssignCommonParam(IObjectDb objectDb, CasinoDataMetaModel metaModel)
+        private static void AssignCommonParam(IObjectDb objectDb, CasinoDataMetaModel metaModel)
         {
             objectDb.AddInParameter("adminid", DbType.Int32, metaModel.AdminId);
             objectDb.AddInParameter("xmldata", DbType.String, metaModel.XmlData);

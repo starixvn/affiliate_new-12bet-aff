@@ -21,7 +21,7 @@
 
         public ResultInfo Run()
         {
-            DateTime date = DateTime.Now;
+            var date = DateTime.Now;
 
             // Run Yesterday Data at the beginning and the end of today
             if (date.Hour == _appSettings.CheckingTime1 || date.Hour == _appSettings.CheckingTime2 || _appSettings.ForTest)
