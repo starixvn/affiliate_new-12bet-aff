@@ -106,6 +106,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Fanex.Affiliate.DataService.CheckSum\Fanex.Affiliate.DataService.CheckSum.csproj">
+      <Project>{6A965DB8-4270-4859-97C1-CD22C4B50969}</Project>
+      <Name>Fanex.Affiliate.DataService.CheckSum</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fanex.Affiliate.DataService.Job\Fanex.Affiliate.DataService.Job.csproj">
       <Project>{8df4e9c0-19e3-4722-9cb1-252c087270fb}</Project>
       <Name>Fanex.Affiliate.DataService.Job</Name>
