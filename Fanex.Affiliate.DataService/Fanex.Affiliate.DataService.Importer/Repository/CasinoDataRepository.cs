@@ -1,7 +1,7 @@
 ﻿namespace Fanex.Affiliate.DataService.Importer.Repository
 {
     using System.Data;
-    using Common.Enum;
+    using Enum;
     using Fanex.Affiliate.DataService.Importer.DTO;
     using Fanex.Data;
 
@@ -36,7 +36,7 @@
         {
             const string SpName = "Aff_CasinoImportData";
 
-            using (var objectDb = new ObjectDb(SpName))
+            using (var objectDb = GetObjectDb(SpName))
             {
                 AssignCommonParam(objectDb, metaModel);
                 objectDb.AddInParameter("importdate", DbType.DateTime, metaModel.DateImport);
@@ -54,7 +54,7 @@
         {
             const string SpName = "Task_Aff_MemberDailyCasino_IA";
 
-            using (var objectDb = new ObjectDb(SpName))
+            using (var objectDb = GetObjectDb(SpName))
             {
                 AssignCommonParam(objectDb, metaModel);
                 objectDb.AddInParameter("winlostdate", DbType.Date, metaModel.DateImport);

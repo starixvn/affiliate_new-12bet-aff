@@ -5,7 +5,6 @@
     using System.IO;
     using System.Net;
     using System.Xml;
-    using Common.Enum;
     using Fanex.Affiliate.DataService.Importer.DTO;
     using Fanex.Affiliate.DataService.Importer.Enum;
     using Fanex.Affiliate.DataService.Importer.Repository;

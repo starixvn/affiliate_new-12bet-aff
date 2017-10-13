@@ -28,5 +28,10 @@
                 Message = Convert.ToString(errorMessage)
             };
         }
+
+        protected internal virtual IObjectDb GetObjectDb(string spname)
+        {
+            return new ObjectDb(spname);
+        }
     }
 }

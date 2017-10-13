@@ -1,9 +1,10 @@
 ﻿namespace Fanex.Affiliate.DataService.Importer
 {
     using System;
-    using Common.DTO;
-    using Common.Ultilities;
     using Enum;
+    using Logging;
+    using MailDeliver.MailClient.API;
+    using MailDeliver.Model;
     using Utilities;
 
     public class CasinoDataImportingRunner : ICasinoDataImportingRunner
@@ -12,22 +13,20 @@
 
         private readonly ICasinoDataService _casinoDataService;
         private readonly IAppSettings _appSettings;
-        private readonly IDataServiceFactory _dataServiceFactory;
+        private readonly ILogger _logger;
+        private readonly IMailDeliver _mailDeliver;
 
-        public CasinoDataImportingRunner() : this(null, null, null)
+        public CasinoDataImportingRunner() : this(null, null, null, null)
         {
         }
 
-        public CasinoDataImportingRunner(ICasinoDataService casinoDataService, IAppSettings appSetting, IDataServiceFactory dataServiceFactory)
+        public CasinoDataImportingRunner(ICasinoDataService casinoDataService, IAppSettings appSetting, ILogger logger, IMailDeliver mailDeliver)
         {
             _casinoDataService = casinoDataService ?? new CasinoDataService();
             _appSettings = appSetting ?? new AppSettings();
-            _dataServiceFactory = dataServiceFactory ?? new DataServiceFactory();
+            _logger = logger ?? Logger.Log;
+            _mailDeliver = mailDeliver ?? new MailDeliver();
         }
-
-        protected IDataServiceLogger Logger => _dataServiceFactory.GetLogger();
-
-        protected IEmailSender EmailSender => _dataServiceFactory.GetEmailSender();
 
         public void Run()
         {
@@ -46,17 +45,17 @@
 
                 var result = _casinoDataService.ImportData(dateType);
 
-                Logger.LogInfo($"{LogTitle} {logMessage}");
+                _logger.Info($"{LogTitle} {logMessage}");
 
                 if (!result.IsSuccessful)
                 {
-                    Logger.LogError($"{LogTitle} {result.Code}: {result.Message}");
+                    _logger.Error($"{LogTitle} {result.Code}: {result.Message}");
                     SendMail(result.Message);
                 }
             }
             catch (Exception ex)
             {
-                Logger.LogError($"{LogTitle} {ex.Message}", ex + "\r\nStacktrace: " + ex.StackTrace);
+                _logger.Error($"{LogTitle} {ex.Message}", ex + "\r\nStacktrace: " + ex.StackTrace);
                 SendMail(ex.Message);
             }
         }
@@ -65,17 +64,17 @@
         {
             var title = _appSettings.SubjectMailError;
 
-            var email = new Email
+            var email = new MailRecord
             {
-                To = _appSettings.ToMail,
+                MailTo = _appSettings.ToMail,
                 Subject = title,
                 Title = title,
                 Body = content,
-                Bcc = _appSettings.BccMail,
-                Cc = _appSettings.CcMail
+                MailBcc = _appSettings.BccMail,
+                MailCc = _appSettings.CcMail
             };
 
-            EmailSender.Send(email);
+            _mailDeliver.SendMail(email);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Fanex.Affiliate.DataService.Importer.Repository
 {
-    using Common.Enum;
+    using Enum;
     using Fanex.Affiliate.DataService.Importer.DTO;
 
     public interface ICasinoDataRepository
