@@ -6,7 +6,5 @@
     public interface IDataImportingRunner
     {
         ResultInfo Run();
-
-        ResultInfo Run(DateTime date);
     }
 }

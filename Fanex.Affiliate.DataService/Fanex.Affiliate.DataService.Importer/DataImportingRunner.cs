@@ -31,10 +31,5 @@
 
             return _casinoDataService.ImportData(date);
         }
-
-        public ResultInfo Run(DateTime date)
-        {
-            return _casinoDataService.ImportData(date);
-        }
     }
 }

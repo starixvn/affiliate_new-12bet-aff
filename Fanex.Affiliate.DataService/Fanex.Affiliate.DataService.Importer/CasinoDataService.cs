@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.IO;
     using System.Net;
     using System.Xml;
@@ -28,6 +29,11 @@
         public ResultInfo ImportData(DateTime date)
         {
             var fileName = DownloadFile(date);
+            return ProcessAndImportData(date, fileName);
+        }
+
+        private ResultInfo ProcessAndImportData(DateTime date, string fileName)
+        {
             var xmlDocument = ConvertCSVToXml(fileName);
 
             var metaModel = new CasinoDataMetaModel
@@ -61,7 +67,7 @@
             return fileName;
         }
 
-        public XmlDocument ConvertCSVToXml(string fileName)
+        private static XmlDocument ConvertCSVToXml(string fileName)
         {
             var doc = new XmlDocument();
             var root = doc.CreateElement("root");
@@ -136,6 +142,11 @@
                 return Convert.ToInt32(hs[colName]);
             else
                 return Convert.ToInt32(hs["\"" + colName + "\""]);
+        }
+
+        public bool ImportData(string filePath)
+        {
+            throw new NotImplementedException();
         }
     }
 }

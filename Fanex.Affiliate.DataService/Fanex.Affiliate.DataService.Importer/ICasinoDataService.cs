@@ -1,6 +1,7 @@
 ﻿namespace Fanex.Affiliate.DataService.Importer
 {
     using System;
+    using System.Collections.Generic;
     using System.Xml;
     using DTO;
 
@@ -8,6 +9,6 @@
     {
         ResultInfo ImportData(DateTime date);
 
-        XmlDocument ConvertCSVToXml(string fileName);
+        bool ImportData(string filePath);
     }
 }
